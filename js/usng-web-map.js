@@ -518,11 +518,16 @@ window.usng_map = (function() {
                 return i%size_point===0 ? points.slice(i, i+size_point) : null;
               }).filter(function(e){ return e;})
 
+              var size_usng_1k = 2
+              var usng_1k_groups = usng_1k.map(function(e,i){
+                return i%size_usng_1k===0 ? usng_1k.slice(i, i+size_usng_1k) : null;
+              }).filter(function(e){ return e;})
+
 
                 var $text = $("<ul></ul>");
-                $.each(usng_1k, function(i, text) {
-                  $("<h4>Iowa</h4>").appendTo($text);
-                    $("<li><a href='" + _config.layers["usng_1k"].mapbookLocations + text + ".pdf' target='_blank'>" + text + "</a></li>").appendTo($text);
+                $.each(usng_1k_groups, function(i, text) {
+                  $("<h4>" + text[0] + "</h4>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
                 });
                 $.each(point_groups, function(i, text) {
                   $("<h4>" + text[1] + ", " + text[2] + " (" + text[4] + ")</h4>").appendTo($text);
@@ -670,6 +675,7 @@ window.usng_map = (function() {
 
             var usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_1k);
             var labels_1k = _config.layers["usng_1k"].labelPropertyName;
+            var labels_1k_url = _config.layers["usng_1k"].mapbookLocations;
 
             var polygons = leafletPip.pointInLayer(mouseEvent.latlng, _layers.polygons);
             var labels_polygons_url = _config.layers["polygons"].linkbook;
@@ -688,7 +694,7 @@ window.usng_map = (function() {
                 _clicked.usng_10k.push(layer.feature.properties[labels_10k]);
             });
             $.each(usng_1k, function(i, layer) {
-                _clicked.usng_1k.push(layer.feature.properties[labels_1k]);
+                _clicked.usng_1k.push(layer.feature.properties[labels_1k], layer.feature.properties[labels_1k_url]);
             });
             $.each(points, function(i, layer) {
               _clicked.points.push(layer.properties[labels_points_url], layer.properties[labels_points_desc],  layer.properties[labels_points_state],  layer.properties[labels_points_src],  layer.properties[labels_points_type]);
@@ -747,7 +753,9 @@ window.usng_map = (function() {
                 var points = _layers.points.toGeoJSON();
 
                 var labels_10k = _config.layers["usng_10k"].labelPropertyName;
+
                 var labels_1k = _config.layers["usng_1k"].labelPropertyName;
+                var labels_1k_url = _config.layers["usng_1k"].mapbookLocations;
 
                 var labels_polygons_url = _config.layers["polygons"].linkbook;
                 var labels_polygons_desc = _config.layers["polygons"].labelPropertyName;
@@ -774,7 +782,7 @@ window.usng_map = (function() {
                 $.each(usng_1k.features, function(i, feature) {
                     var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
                     if (intersection) {
-                        _selected.usng_1k.push(feature.properties[labels_1k]);
+                        _selected.usng_1k.push(feature.properties[labels_1k], feature.properties[labels_1k_url]);
                     }
                 });
                 $.each(points.features, function(i, feature) {

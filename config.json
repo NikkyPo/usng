@@ -15,7 +15,7 @@
         },
         "usng_1k": {
         	"dataLocation": "data/iowa/iowa_mapbook_boundaries.json",
-        	"mapbookLocations": "maps/USNG_mapbooks/",
+        	"mapbookLocations": "mapbooks",
         	"showLabels": true,
         	"labelPropertyName": "Name",
           "color": "#377eb8",
