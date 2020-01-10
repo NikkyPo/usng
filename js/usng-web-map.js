@@ -523,6 +523,11 @@ window.usng_map = (function() {
                 return i%size_usng_1k===0 ? usng_1k.slice(i, i+size_usng_1k) : null;
               }).filter(function(e){ return e;})
 
+              var size_usng_10k = 2
+              var usng_10k_groups = usng_10k.map(function(e,i){
+                return i%size_usng_10k===0 ? usng_10k.slice(i, i+size_usng_10k) : null;
+              }).filter(function(e){ return e;})
+
 
                 var $text = $("<ul></ul>");
                 $.each(usng_1k_groups, function(i, text) {
@@ -543,9 +548,9 @@ window.usng_map = (function() {
                   $("<p></p>").appendTo($text);
                     // $("<li><a href='" + _layers["polygons"]["_layers"]["289"]["feature"]["properties"]["polygons_SrcLink"] + "'target='_blank'>" + text + "</a></li>").appendTo($text);
                 });
-                $.each(usng_10k, function(i, text) {
-                  $("<h4>Iowa</h4>").appendTo($text);
-                    $("<li><a href='" + _config.layers["usng_10k"].mapbookLocations + text + ".pdf' target='_blank'>" + text + "</a></li>").appendTo($text);
+                $.each(usng_10k_groups, function(i, text) {
+                  $("<h4>" + text[0] + "</h4>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
                 });
                 return $text;
             }
@@ -672,6 +677,7 @@ window.usng_map = (function() {
             });
             var usng_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_10k);
             var labels_10k = _config.layers["usng_10k"].labelPropertyName;
+            var labels_10k_url = _config.layers["usng_10k"].mapbookLocations;
 
             var usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_1k);
             var labels_1k = _config.layers["usng_1k"].labelPropertyName;
@@ -691,7 +697,7 @@ window.usng_map = (function() {
             var labels_points_type = _config.layers["points"].labelPropertyName
 
             $.each(usng_10k, function(i, layer) {
-                _clicked.usng_10k.push(layer.feature.properties[labels_10k]);
+                _clicked.usng_10k.push(layer.feature.properties[labels_10k], layer.feature.properties[labels_10k_url]);
             });
             $.each(usng_1k, function(i, layer) {
                 _clicked.usng_1k.push(layer.feature.properties[labels_1k], layer.feature.properties[labels_1k_url]);
@@ -753,6 +759,7 @@ window.usng_map = (function() {
                 var points = _layers.points.toGeoJSON();
 
                 var labels_10k = _config.layers["usng_10k"].labelPropertyName;
+                var labels_10k_url = _config.layers["usng_10k"].mapbookLocations;
 
                 var labels_1k = _config.layers["usng_1k"].labelPropertyName;
                 var labels_1k_url = _config.layers["usng_1k"].mapbookLocations;
@@ -776,7 +783,7 @@ window.usng_map = (function() {
                 $.each(usng_10k.features, function(i, feature) {
                     var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
                     if (intersection) {
-                        _selected.usng_10k.push(feature.properties[labels_10k]);
+                        _selected.usng_10k.push(feature.properties[labels_10k], feature.properties[labels_10k_url]);
                     }
                 });
                 $.each(usng_1k.features, function(i, feature) {

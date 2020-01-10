@@ -7,7 +7,7 @@
     "layers": {
         "usng_10k": {
         	"dataLocation": "data/iowa/usng_10k.json",
-        	"mapbookLocations": "maps/USNG_10K/",
+        	"mapbookLocations": "mapbooks",
         	"showLabels": true,
         	"labelPropertyName": "GRID_10K",
           "color": "#333333",
