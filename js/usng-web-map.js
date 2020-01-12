@@ -255,33 +255,52 @@ window.usng_map = (function() {
     L.Icon.Default.imagePath = "data/"
 
     var _layers = {
-        "usng_1k": new L.geoJson(null, {
+      "iowa_usng_10k": new L.geoJson(null, {
+          stroke: true,
+          color: "#333333",
+          weight: 2,
+          opacity: 0.4,
+          fill: false,
+          clickable: true,
+          className: "iowa_usng_10k"
+      }),
+        "iowa_usng_1k": new L.geoJson(null, {
             stroke: true,
             color: "#333333",
             weight: 2,
             dashArray: "2, 3",
-            opacity: 0.6,
+            opacity: 0.4,
             fill: false,
             clickable: true,
-            className: "usng_1k"
+            className: "iowa_usng_1k"
+        }),
+        "mn_10k_overview": new L.geoJson(null, {
+            stroke: true,
+            color: "#333333",
+            weight: 2,
+            opacity: 0.4,
+            fill: false,
+            clickable: true,
+            className: "mn_10k_overview"
+        }),
+        "mn_10k": new L.geoJson(null, {
+            stroke: true,
+            color: "#333333",
+            weight: 2,
+            dashArray: "2, 3",
+            opacity: 0.4,
+            fill: false,
+            clickable: true,
+            className: "mn_10k"
         }),
         "polygons": new L.geoJson(null, {
             stroke: true,
             color: "#333333",
             weight: 2,
-            opacity: 0.6,
+            opacity: 0.4,
             fill: false,
             clickable: true,
             className: "polygons"
-        }),
-        "usng_10k": new L.geoJson(null, {
-            stroke: true,
-            color: "#333333",
-            weight: 2,
-            opacity: 0.6,
-            fill: false,
-            clickable: true,
-            className: "usng_10k"
         }),
         "points": new L.geoJson(null, {
           pointToLayer: function(feature, latlng) {
@@ -444,7 +463,7 @@ window.usng_map = (function() {
             _basemap = L.esri.basemapLayer(_config.basemap);
             // initialize a map with the empty layers
             _map = L.map("inner_map_container", {
-                layers: [_basemap, _layers.polygons, _layers.usng_10k, _layers.usng_1k, _layers.points]
+                layers: [_basemap, _layers.polygons, _layers.iowa_usng_10k, _layers.mn_10k, _layers.mn_10k_overview, _layers.iowa_usng_1k, _layers.points]
             });
             _zoomExtentButton.addTo(_map);
             // create some global variables for debugging, if specified
@@ -457,12 +476,14 @@ window.usng_map = (function() {
             // get the layer data from the JSON files
             _getLayerData(function() {
                 // when everything is loaded, rearrange files
-                _layers.usng_10k.bringToBack();
+                _layers.iowa_usng_10k.bringToBack();
                 // make sure the polygons layer is in the back
-                _layers.polygons.bringToBack();
+                _layers.polygons.bringToFront();
                 _layers.points.bringToFront();
-                // and the usng_1k layer sits on top of the USNG 10k maps
-                _layers.usng_1k.bringToBack();
+                // and the iowa_usng_1k layer sits on top of the USNG 10k maps
+                _layers.iowa_usng_1k.bringToBack();
+                _layers.mn_10k.bringToBack();
+                _layers.mn_10k_overview.bringToBack();
             });
             // fit the map extent to the specified boundaries
             _zoomToExtent();
@@ -504,9 +525,9 @@ window.usng_map = (function() {
      */
     // Results
     var results = (function() {
-        function _getDOM(usng_1k, usng_10k, polygons, points) {
+        function _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview) {
 
-            if (usng_1k.length > 0 || usng_10k.length > 0 || polygons.length > 0 || points.length > 0) {
+            if (iowa_usng_1k.length > 0 || iowa_usng_10k.length > 0 || polygons.length > 0 || points.length > 0 || mn_10k.length > 0 || mn_10k_overview.length > 0) {
 
               var size_poly = 4
               var poly_groups = polygons.map(function(e,i){
@@ -518,27 +539,47 @@ window.usng_map = (function() {
                 return i%size_point===0 ? points.slice(i, i+size_point) : null;
               }).filter(function(e){ return e;})
 
-              var size_usng_1k = 2
-              var usng_1k_groups = usng_1k.map(function(e,i){
-                return i%size_usng_1k===0 ? usng_1k.slice(i, i+size_usng_1k) : null;
+              var size_iowa_usng_1k = 2
+              var iowa_usng_1k_groups = iowa_usng_1k.map(function(e,i){
+                return i%size_iowa_usng_1k===0 ? iowa_usng_1k.slice(i, i+size_iowa_usng_1k) : null;
               }).filter(function(e){ return e;})
 
-              var size_usng_10k = 2
-              var usng_10k_groups = usng_10k.map(function(e,i){
-                return i%size_usng_10k===0 ? usng_10k.slice(i, i+size_usng_10k) : null;
+              var size_iowa_usng_10k = 2
+              var iowa_usng_10k_groups = iowa_usng_10k.map(function(e,i){
+                return i%size_iowa_usng_10k===0 ? iowa_usng_10k.slice(i, i+size_iowa_usng_10k) : null;
               }).filter(function(e){ return e;})
 
+              var size_mn_10k_overview = 2
+              var mn_10k_overview_groups = mn_10k_overview.map(function(e,i){
+                return i%size_mn_10k_overview===0 ? mn_10k_overview.slice(i, i+size_mn_10k_overview) : null;
+              }).filter(function(e){ return e;})
+
+              var size_mn_10k = 2
+              var mn_10k_groups = mn_10k.map(function(e,i){
+                return i%size_mn_10k===0 ? mn_10k.slice(i, i+size_mn_10k) : null;
+              }).filter(function(e){ return e;})
 
                 var $text = $("<ul></ul>");
-                $.each(usng_1k_groups, function(i, text) {
+                $.each(iowa_usng_1k_groups, function(i, text) {
                   $("<h4>" + text[0] + "</h4>").appendTo($text);
                   $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
                 });
+
                 $.each(point_groups, function(i, text) {
                   $("<h4>" + text[1] + ", " + text[2] + " (" + text[4] + ")</h4>").appendTo($text);
                   $("<li><a href='" + text[0] + "' target='_blank'> Linkbook</a></li>").appendTo($text);
                   $("<li><a href='" + text[3] + "' target='_blank'> Source</a></li>").appendTo($text);
                   $("<p></p>").appendTo($text);
+                });
+
+                $.each(mn_10k_groups, function(i, text) {
+                  $("<h4>" + text[0] + "</h4>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
+                });
+
+                $.each(mn_10k_overview_groups, function(i, text) {
+                  $("<h4>" + text[0] + "</h4>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
                 });
 
                 $.each(poly_groups, function(i, text) {
@@ -548,7 +589,7 @@ window.usng_map = (function() {
                   $("<p></p>").appendTo($text);
                     // $("<li><a href='" + _layers["polygons"]["_layers"]["289"]["feature"]["properties"]["polygons_SrcLink"] + "'target='_blank'>" + text + "</a></li>").appendTo($text);
                 });
-                $.each(usng_10k_groups, function(i, text) {
+                $.each(iowa_usng_10k_groups, function(i, text) {
                   $("<h4>" + text[0] + "</h4>").appendTo($text);
                   $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
                 });
@@ -559,8 +600,8 @@ window.usng_map = (function() {
             }
         };
 
-        function show(usng_1k, usng_10k, polygons, points) {
-            var $dom = _getDOM(usng_1k, usng_10k, polygons, points);
+        function show(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview) {
+            var $dom = _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview);
             if ($dom) {
                 $results.find(".results_list").empty().append($dom);
                 $appContainer.removeClass("hide_results");
@@ -587,20 +628,28 @@ window.usng_map = (function() {
     // Map hovering
     var _hover = (function() {
         var _hovered = {
-            usng_1k: [],
-            usng_10k: [],
+            iowa_usng_1k: [],
+            iowa_usng_10k: [],
             polygons: [],
-            points: []
+            points: [],
+            mn_10k: [],
+            mn_10k_overview: []
         };
         var _popup = new L.Control.HoverPopup();
 
         function _updateText() {
-            if (_hovered.usng_1k.length > 0 || _hovered.polygons.length > 0 || _hovered.usng_10k.length > 0 || _hovered.points.length > 0) {
+            if (_hovered.iowa_usng_1k.length > 0 || _hovered.polygons.length > 0 || _hovered.iowa_usng_10k.length > 0 || _hovered.points.length > 0 || _hovered.mn_10k.length > 0 || _hovered.mn_10k_overview.length > 0) {
                 var $hoverText = $("<ul></ul>");
-                $.each(_hovered.usng_1k, function(i, text) {
+                $.each(_hovered.iowa_usng_1k, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
                 });
-                $.each(_hovered.usng_10k, function(i, text) {
+                $.each(_hovered.iowa_usng_10k, function(i, text) {
+                    $hoverText.append("<li>" + text + "</li>");
+                });
+                $.each(_hovered.mn_10k, function(i, text) {
+                    $hoverText.append("<li>" + text + "</li>");
+                });
+                $.each(_hovered.mn_10k_overview, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
                 });
                 $.each(_hovered.polygons, function(i, text) {
@@ -624,8 +673,8 @@ window.usng_map = (function() {
                 _hovered[key] = [];
             });
 
-            var usng_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_10k);
-            var labels_10k = _config.layers["usng_10k"].labelPropertyName;
+            var iowa_usng_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.iowa_usng_10k);
+            var labels_10k = _config.layers["iowa_usng_10k"].labelPropertyName;
 
             var polygons = leafletPip.pointInLayer(mouseEvent.latlng, _layers.polygons);
             var labels_polygons = _config.layers["polygons"].labelPropertyName;
@@ -633,20 +682,32 @@ window.usng_map = (function() {
             var points = leafletPip.pointInLayer(mouseEvent.latlng, _layers.points);
             var labels_points = _config.layers["points"].labelPropertyName;
 
-            var usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_1k);
-            var labels_1k = _config.layers["usng_1k"].labelPropertyName;
+            var mn_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k);
+            var labels_mn_10k = _config.layers["mn_10k"].labelPropertyName;
 
-            $.each(usng_10k, function(i, layer) {
-                _hovered.usng_10k.push(layer.feature.properties[labels_10k]);
+            var mn_10k_overview = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k_overview);
+            var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
+
+            var iowa_usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.iowa_usng_1k);
+            var labels_1k = _config.layers["iowa_usng_1k"].labelPropertyName;
+
+            $.each(iowa_usng_10k, function(i, layer) {
+                _hovered.iowa_usng_10k.push(layer.feature.properties[labels_10k]);
             });
-            $.each(usng_1k, function(i, layer) {
-                _hovered.usng_1k.push(layer.feature.properties[labels_1k]);
+            $.each(iowa_usng_1k, function(i, layer) {
+                _hovered.iowa_usng_1k.push(layer.feature.properties[labels_1k]);
             });
             $.each(polygons, function(i, layer) {
                 _hovered.polygons.push(layer.feature.properties[labels_polygons]);
             });
             $.each(points, function(i, layer) {
                 _hovered.points.push(layer.feature.properties[labels_points]);
+            });
+            $.each(mn_10k, function(i, layer) {
+                _hovered.mn_10k.push(layer.feature.properties[labels_mn_10k]);
+            });
+            $.each(mn_10k_overview, function(i, layer) {
+                _hovered.mn_10k_overview.push(layer.feature.properties[labels_mn_10k_overview]);
             });
             _updateText();
         };
@@ -665,23 +726,25 @@ window.usng_map = (function() {
     // Map clicking
     var _click = (function() {
         var _clicked = {
-            usng_1k: [],
-            usng_10k: [],
+            iowa_usng_1k: [],
+            iowa_usng_10k: [],
             polygons: [],
-            points: []
+            points: [],
+            mn_10k: [],
+            mn_10k_overview: []
         };
 
         function _click(mouseEvent) {
             $.each(_clicked, function(key, selected) {
                 _clicked[key] = [];
             });
-            var usng_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_10k);
-            var labels_10k = _config.layers["usng_10k"].labelPropertyName;
-            var labels_10k_url = _config.layers["usng_10k"].mapbookLocations;
+            var iowa_usng_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.iowa_usng_10k);
+            var labels_10k = _config.layers["iowa_usng_10k"].labelPropertyName;
+            var labels_10k_url = _config.layers["iowa_usng_10k"].mapbookLocations;
 
-            var usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.usng_1k);
-            var labels_1k = _config.layers["usng_1k"].labelPropertyName;
-            var labels_1k_url = _config.layers["usng_1k"].mapbookLocations;
+            var iowa_usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.iowa_usng_1k);
+            var labels_1k = _config.layers["iowa_usng_1k"].labelPropertyName;
+            var labels_1k_url = _config.layers["iowa_usng_1k"].mapbookLocations;
 
             var polygons = leafletPip.pointInLayer(mouseEvent.latlng, _layers.polygons);
             var labels_polygons_url = _config.layers["polygons"].linkbook;
@@ -696,20 +759,33 @@ window.usng_map = (function() {
             var labels_points_src = _config.layers["points"].srcLocations;
             var labels_points_type = _config.layers["points"].labelPropertyName
 
-            $.each(usng_10k, function(i, layer) {
-                _clicked.usng_10k.push(layer.feature.properties[labels_10k], layer.feature.properties[labels_10k_url]);
+            var mn_10k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k);
+            var labels_mn_10k = _config.layers["mn_10k"].labelPropertyName;
+            var labels_mn_10k_url = _config.layers["mn_10k"].mapbookLocations;
+
+            var mn_10k_overview = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k_overview);
+            var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
+            var labels_mn_10k_overview_url = _config.layers["mn_10k_overview"].mapbookLocations;
+
+            $.each(iowa_usng_10k, function(i, layer) {
+                _clicked.iowa_usng_10k.push(layer.feature.properties[labels_10k], layer.feature.properties[labels_10k_url]);
             });
-            $.each(usng_1k, function(i, layer) {
-                _clicked.usng_1k.push(layer.feature.properties[labels_1k], layer.feature.properties[labels_1k_url]);
+            $.each(iowa_usng_1k, function(i, layer) {
+                _clicked.iowa_usng_1k.push(layer.feature.properties[labels_1k], layer.feature.properties[labels_1k_url]);
             });
             $.each(points, function(i, layer) {
               _clicked.points.push(layer.properties[labels_points_url], layer.properties[labels_points_desc],  layer.properties[labels_points_state],  layer.properties[labels_points_src],  layer.properties[labels_points_type]);
             });
             $.each(polygons, function(i, layer) {
               _clicked.polygons.push(layer.feature.properties[labels_polygons_url], layer.feature.properties[labels_polygons_desc], layer.feature.properties[labels_polygons_state], layer.feature.properties[labels_polygons_src]);
-
             });
-            results.show(_clicked.usng_1k, _clicked.usng_10k, _clicked.polygons, _clicked.points);
+            $.each(mn_10k, function(i, layer) {
+                _clicked.mn_10k.push(layer.feature.properties[labels_mn_10k], layer.feature.properties[labels_mn_10k_url]);
+            });
+            $.each(mn_10k_overview, function(i, layer) {
+                _clicked.mn_10k_overview.push(layer.feature.properties[labels_mn_10k_overview], layer.feature.properties[labels_mn_10k_overview_url]);
+            });
+            results.show(_clicked.iowa_usng_1k, _clicked.iowa_usng_10k, _clicked.polygons, _clicked.points, _clicked.mn_10k, _clicked.mn_10k_overview);
         };
 
         function init() {
@@ -729,10 +805,12 @@ window.usng_map = (function() {
             onClick: _toggle
         });
         var _selected = {
-            usng_1k: [],
-            usng_10k: [],
+            iowa_usng_1k: [],
+            iowa_usng_10k: [],
             polygons: [],
-            points: []
+            points: [],
+            mn_10k: [],
+            mn_10k_overview: []
         };
         var _handler;
 
@@ -753,16 +831,24 @@ window.usng_map = (function() {
         function _getResults(e) {
             if (e) {
                 var drawnFeature = e.layer.toGeoJSON();
-                var usng_1k = _layers.usng_1k.toGeoJSON();
-                var usng_10k = _layers.usng_10k.toGeoJSON();
+                var iowa_usng_1k = _layers.iowa_usng_1k.toGeoJSON();
+                var iowa_usng_10k = _layers.iowa_usng_10k.toGeoJSON();
                 var polygons = _layers.polygons.toGeoJSON();
                 var points = _layers.points.toGeoJSON();
+                var mn_10k = _layers.mn_10k.toGeoJSON();
+                var mn_10k_overview = _layers.mn_10k_overview.toGeoJSON();
 
-                var labels_10k = _config.layers["usng_10k"].labelPropertyName;
-                var labels_10k_url = _config.layers["usng_10k"].mapbookLocations;
+                var labels_10k = _config.layers["iowa_usng_10k"].labelPropertyName;
+                var labels_10k_url = _config.layers["iowa_usng_10k"].mapbookLocations;
 
-                var labels_1k = _config.layers["usng_1k"].labelPropertyName;
-                var labels_1k_url = _config.layers["usng_1k"].mapbookLocations;
+                var labels_1k = _config.layers["iowa_usng_1k"].labelPropertyName;
+                var labels_1k_url = _config.layers["iowa_usng_1k"].mapbookLocations;
+
+                var labels_mn_10k = _config.layers["mn_10k"].labelPropertyName;
+                var labels_mn_10k_url = _config.layers["mn_10k"].mapbookLocations;
+
+                var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
+                var labels_mn_10k_overview_url = _config.layers["mn_10k_overview"].mapbookLocations;
 
                 var labels_polygons_url = _config.layers["polygons"].linkbook;
                 var labels_polygons_desc = _config.layers["polygons"].labelPropertyName;
@@ -775,21 +861,23 @@ window.usng_map = (function() {
                 var labels_points_src = _config.layers["points"].srcLocations;
                 var labels_points_type = _config.layers["points"].labelPropertyName
 
-                _selected.usng_1k = [];
-                _selected.usng_10k = [];
+                _selected.iowa_usng_1k = [];
+                _selected.iowa_usng_10k = [];
+                _selected.mn_10k = [];
+                _selected.mn_10k_overview = [];
                 _selected.polygons = [];
                 _selected.points = [];
 
-                $.each(usng_10k.features, function(i, feature) {
+                $.each(iowa_usng_10k.features, function(i, feature) {
                     var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
                     if (intersection) {
-                        _selected.usng_10k.push(feature.properties[labels_10k], feature.properties[labels_10k_url]);
+                        _selected.iowa_usng_10k.push(feature.properties[labels_10k], feature.properties[labels_10k_url]);
                     }
                 });
-                $.each(usng_1k.features, function(i, feature) {
+                $.each(iowa_usng_1k.features, function(i, feature) {
                     var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
                     if (intersection) {
-                        _selected.usng_1k.push(feature.properties[labels_1k], feature.properties[labels_1k_url]);
+                        _selected.iowa_usng_1k.push(feature.properties[labels_1k], feature.properties[labels_1k_url]);
                     }
                 });
                 $.each(points.features, function(i, feature) {
@@ -804,8 +892,20 @@ window.usng_map = (function() {
                       _selected.polygons.push(feature.properties[labels_polygons_url],feature.properties[labels_polygons_desc], feature.properties[labels_polygons_state], feature.properties[labels_polygons_src]);
                     }
                 });
-                if (_selected.usng_1k.length > 0 || _selected.usng_10k.length > 0 || _selected.polygons.length > 0 || _selected.points.length > 0) {
-                    results.show(_selected.usng_1k, _selected.usng_10k, _selected.polygons, _selected.points );
+                $.each(mn_10k.features, function(i, feature) {
+                    var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
+                    if (intersection) {
+                        _selected.mn_10k.push(feature.properties[labels_mn_10k], feature.properties[labels_mn_10k_url]);
+                    }
+                });
+                $.each(mn_10k_overview.features, function(i, feature) {
+                    var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
+                    if (intersection) {
+                        _selected.mn_10k_overview.push(feature.properties[labels_mn_10k_overview], feature.properties[labels_mn_10k_overview_url]);
+                    }
+                });
+                if (_selected.iowa_usng_1k.length > 0 || _selected.iowa_usng_10k.length > 0 || _selected.polygons.length > 0 || _selected.points.length > 0 || _selected.mn_10k.length > 0 || _selected.mn_10k_overview.length > 0) {
+                    results.show(_selected.iowa_usng_1k, _selected.iowa_usng_10k, _selected.polygons, _selected.points, _selected.mn_10k, _selected.mn_10k_overview);
                 }
                 else {
                     results.hide();

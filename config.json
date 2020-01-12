@@ -5,21 +5,37 @@
     ],
     "basemap": "Streets",
     "layers": {
-        "usng_10k": {
-        	"dataLocation": "data/iowa/usng_10k.json",
+        "iowa_usng_10k": {
+        	"dataLocation": "data/iowa/iowa_usng_10k.json",
         	"mapbookLocations": "mapbooks",
         	"showLabels": true,
         	"labelPropertyName": "GRID_10K",
           "color": "#333333",
           "labelColor": "#333333"
         },
-        "usng_1k": {
-        	"dataLocation": "data/iowa/iowa_mapbook_boundaries.json",
+        "iowa_usng_1k": {
+        	"dataLocation": "data/iowa/iowa_usng_1k.json",
         	"mapbookLocations": "mapbooks",
         	"showLabels": true,
         	"labelPropertyName": "Name",
           "color": "#377eb8",
           "labelColor": "#377eb8"
+        },
+        "mn_10k_overview": {
+        	"dataLocation": "data/minnesota/mnGeo_10k_overview.geojson",
+        	"mapbookLocations": "URL",
+        	"showLabels": true,
+        	"labelPropertyName": "Name",
+          "color": "#333333",
+          "labelColor": "#333333"
+        },
+        "mn_10k": {
+        	"dataLocation": "data/minnesota/mnGeo_10k.geojson",
+        	"mapbookLocations": "URL",
+        	"showLabels": true,
+        	"labelPropertyName": "Name",
+          "color": "#333333",
+          "labelColor": "#333333"
         },
         "polygons": {
           "dataLocation": "data/polygons.geojson",

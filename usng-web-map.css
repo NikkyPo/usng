@@ -1032,9 +1032,9 @@ body {
 .usng_web_map {
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   /* Different App States (showing results vs hiding results, screen sizes) */ }
-.usng_web_map #inner_map_container svg .usng_10k {
+.usng_web_map #inner_map_container svg .iowa_usng_10k {
     pointer-events: all; }
-.usng_web_map #inner_map_container svg .usng_10k:hover {
+.usng_web_map #inner_map_container svg .iowa_usng_10k:hover {
     fill: #333333;
     fill-opacity: 0.5;
     cursor: pointer; }
@@ -1047,6 +1047,12 @@ body {
 .usng_web_map #inner_map_container svg .polygons {
     pointer-events: all; }
 .usng_web_map #inner_map_container svg .polygons:hover {
+    fill: #333333;
+    fill-opacity: 0.5;
+    cursor: pointer; }
+.usng_web_map #inner_map_container svg .mn_10k {
+    pointer-events: all; }
+.usng_web_map #inner_map_container svg .mn_10k:hover {
     fill: #333333;
     fill-opacity: 0.5;
     cursor: pointer; }
