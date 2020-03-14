@@ -30,10 +30,18 @@
           "labelColor": "#333333"
         },
         "mn_10k": {
-        	"dataLocation": "data/minnesota/mnGeo_10k.geojson",
+        	"dataLocation": "data/minnesota/MGACEPC_aerial_10Kmapindex.geojson",
         	"mapbookLocations": "URL",
         	"showLabels": true,
         	"labelPropertyName": "Name",
+          "color": "#333333",
+          "labelColor": "#333333"
+        },
+        "MGACEPC_street_10K": {
+          "dataLocation": "data/minnesota/MGACEPC_street_10Kmapindex.geojson",
+          "mapbookLocations": "URL",
+          "showLabels": true,
+          "labelPropertyName": "Name",
           "color": "#333333",
           "labelColor": "#333333"
         },
