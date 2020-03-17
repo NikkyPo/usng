@@ -480,7 +480,7 @@ window.usng_map = (function() {
                 _layers.iowa_usng_10k.bringToBack();
                 _layers.MGACEPC_street_10K.bringToBack();
                 // make sure the polygons layer is in the back
-                _layers.polygons.bringToFront();
+                _layers.polygons.bringToBack();
                 _layers.points.bringToFront();
                 // and the iowa_usng_1k layer sits on top of the USNG 10k maps
                 _layers.iowa_usng_1k.bringToBack();
@@ -641,6 +641,7 @@ window.usng_map = (function() {
         function _updateText() {
             if (_hovered.iowa_usng_1k.length > 0 || _hovered.polygons.length > 0 || _hovered.iowa_usng_10k.length > 0 || _hovered.points.length > 0 || _hovered.mn_10k.length > 0 || _hovered.MGACEPC_street_10K.length) {
                 var $hoverText = $("<ul></ul>");
+
                 $.each(_hovered.iowa_usng_1k, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
                 });
@@ -648,10 +649,10 @@ window.usng_map = (function() {
                     $hoverText.append("<li>" + text + "</li>");
                 });
                 $.each(_hovered.mn_10k, function(i, text) {
-                    $hoverText.append("<li>" + text + "</li>");
+                    $hoverText.append("<li>" + text + " (aerial)</li>");
                 });
                 $.each(_hovered.MGACEPC_street_10K, function(i, text) {
-                    $hoverText.append("<li>" + text + "</li>");
+                    $hoverText.append("<li>" + text + " (streets)</li>");
                 });
                 $.each(_hovered.polygons, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
