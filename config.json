@@ -21,14 +21,6 @@
           "color": "#377eb8",
           "labelColor": "#377eb8"
         },
-        "mn_10k_overview": {
-        	"dataLocation": "data/minnesota/mnGeo_10K_overview.geojson",
-        	"mapbookLocations": "URL",
-        	"showLabels": true,
-        	"labelPropertyName": "Name",
-          "color": "#333333",
-          "labelColor": "#333333"
-        },
         "mn_10k": {
         	"dataLocation": "data/minnesota/MGACEPC_aerial_10Kmapindex.geojson",
         	"mapbookLocations": "URL",

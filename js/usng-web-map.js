@@ -274,15 +274,6 @@ window.usng_map = (function() {
             clickable: true,
             className: "iowa_usng_1k"
         }),
-        "mn_10k_overview": new L.geoJson(null, {
-            stroke: true,
-            color: "#333333",
-            weight: 2,
-            opacity: 0.4,
-            fill: false,
-            clickable: true,
-            className: "mn_10k_overview"
-        }),
         "mn_10k": new L.geoJson(null, {
             stroke: true,
             color: "#333333",
@@ -329,7 +320,7 @@ window.usng_map = (function() {
 
             layer.on({
                 click: function show() {
-                  $results.find(".results_list").empty().append("<ul><h4>" + feature.properties.name + ", " + feature.properties.ST_ABBV + " (" + feature.properties.TYPE + ")</h4><li><a href='" + feature.properties.LinkBook + "' target='_blank'> Linkbook</a></li><li><a href='" + feature.properties.SrcLink + "' target='_blank'> Source</a></li></ul>");
+                  $results.find(".results_list").empty().append("<ul><h4>" + feature.properties.name + ", " + feature.properties.ST_ABBV + " (" + feature.properties.TYPE + ")</h4><li><a href='" + feature.properties.LinkBook + "' target='_blank'> Download Map Book</a></li><li><a href='" + feature.properties.SrcLink + "' target='_blank'> Source</a></li></ul>");
                   $appContainer.removeClass("hide_results");
                   $appContainer.addClass("show_results");
                   _map.invalidateSize();
@@ -473,7 +464,7 @@ window.usng_map = (function() {
             _basemap = L.esri.basemapLayer(_config.basemap);
             // initialize a map with the empty layers
             _map = L.map("inner_map_container", {
-                layers: [_basemap, _layers.polygons, _layers.iowa_usng_10k, _layers.mn_10k, _layers.mn_10k_overview, _layers.MGACEPC_street_10K, _layers.iowa_usng_1k, _layers.points]
+                layers: [_basemap, _layers.polygons, _layers.iowa_usng_10k, _layers.mn_10k, _layers.MGACEPC_street_10K, _layers.iowa_usng_1k, _layers.points]
             });
             _zoomExtentButton.addTo(_map);
             // create some global variables for debugging, if specified
@@ -494,7 +485,6 @@ window.usng_map = (function() {
                 // and the iowa_usng_1k layer sits on top of the USNG 10k maps
                 _layers.iowa_usng_1k.bringToBack();
                 _layers.mn_10k.bringToBack();
-                _layers.mn_10k_overview.bringToBack();
             });
             // fit the map extent to the specified boundaries
             _zoomToExtent();
@@ -536,9 +526,9 @@ window.usng_map = (function() {
      */
     // Results
     var results = (function() {
-        function _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview, MGACEPC_street_10K) {
+        function _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, MGACEPC_street_10K) {
 
-            if (iowa_usng_1k.length > 0 || iowa_usng_10k.length > 0 || polygons.length > 0 || points.length > 0 || mn_10k.length > 0 || mn_10k_overview.length > 0 || MGACEPC_street_10K.length > 0) {
+            if (iowa_usng_1k.length > 0 || iowa_usng_10k.length > 0 || polygons.length > 0 || points.length > 0 || mn_10k.length > 0 || MGACEPC_street_10K.length > 0) {
 
               var size_poly = 4
               var poly_groups = polygons.map(function(e,i){
@@ -560,11 +550,6 @@ window.usng_map = (function() {
                 return i%size_iowa_usng_10k===0 ? iowa_usng_10k.slice(i, i+size_iowa_usng_10k) : null;
               }).filter(function(e){ return e;})
 
-              var size_mn_10k_overview = 2
-              var mn_10k_overview_groups = mn_10k_overview.map(function(e,i){
-                return i%size_mn_10k_overview===0 ? mn_10k_overview.slice(i, i+size_mn_10k_overview) : null;
-              }).filter(function(e){ return e;})
-
               var size_mn_10k = 2
               var mn_10k_groups = mn_10k.map(function(e,i){
                 return i%size_mn_10k===0 ? mn_10k.slice(i, i+size_mn_10k) : null;
@@ -578,41 +563,36 @@ window.usng_map = (function() {
                 var $text = $("<ul></ul>");
                 $.each(iowa_usng_1k_groups, function(i, text) {
                   $("<h4>Iowa 1k: " + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map</a></li>").appendTo($text);
                 });
 
                 $.each(point_groups, function(i, text) {
                   $("<h4>" + text[1] + ", " + text[2] + " (" + text[4] + ")</h4>").appendTo($text);
-                  $("<li><a href='" + text[0] + "' target='_blank'> Linkbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[0] + "' target='_blank'> Download Map Book</a></li>").appendTo($text);
                   $("<li><a href='" + text[3] + "' target='_blank'> Source</a></li>").appendTo($text);
                   $("<p></p>").appendTo($text);
                 });
 
                 $.each(mn_10k_groups, function(i, text) {
                   $("<h4>Minnesota Aerial 10K: " + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
-                });
-
-                $.each(mn_10k_overview_groups, function(i, text) {
-                  $("<h4>" + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map</a></li>").appendTo($text);
                 });
 
                 $.each(MGACEPC_street_10K_groups, function(i, text) {
                   $("<h4>Minnesota Streets 10K: " + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map</a></li>").appendTo($text);
                 });
 
                 $.each(poly_groups, function(i, text) {
                   $("<h4>" + text[1] + " County, " + text[2] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[0] + "' target='_blank'> Linkbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[0] + "' target='_blank'> Download Map Book</a></li>").appendTo($text);
                   $("<li><a href='" + text[3] + "' target='_blank'> Source</a></li>").appendTo($text);
                   $("<p></p>").appendTo($text);
                     // $("<li><a href='" + _layers["polygons"]["_layers"]["289"]["feature"]["properties"]["polygons_SrcLink"] + "'target='_blank'>" + text + "</a></li>").appendTo($text);
                 });
                 $.each(iowa_usng_10k_groups, function(i, text) {
                   $("<h4>Iowa 10k: " + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Mapbook</a></li>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map</a></li>").appendTo($text);
                 });
                 return $text;
             }
@@ -621,8 +601,8 @@ window.usng_map = (function() {
             }
         };
 
-        function show(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview, MGACEPC_street_10K) {
-            var $dom = _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, mn_10k_overview, MGACEPC_street_10K);
+        function show(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, MGACEPC_street_10K) {
+            var $dom = _getDOM(iowa_usng_1k, iowa_usng_10k, polygons, points, mn_10k, MGACEPC_street_10K);
             if ($dom) {
                 $results.find(".results_list").empty().append($dom);
                 $appContainer.removeClass("hide_results");
@@ -654,13 +634,12 @@ window.usng_map = (function() {
             polygons: [],
             points: [],
             mn_10k: [],
-            mn_10k_overview: [],
             MGACEPC_street_10K: []
         };
         var _popup = new L.Control.HoverPopup();
 
         function _updateText() {
-            if (_hovered.iowa_usng_1k.length > 0 || _hovered.polygons.length > 0 || _hovered.iowa_usng_10k.length > 0 || _hovered.points.length > 0 || _hovered.mn_10k.length > 0 || _hovered.mn_10k_overview.length > 0 || _hovered.MGACEPC_street_10K.length) {
+            if (_hovered.iowa_usng_1k.length > 0 || _hovered.polygons.length > 0 || _hovered.iowa_usng_10k.length > 0 || _hovered.points.length > 0 || _hovered.mn_10k.length > 0 || _hovered.MGACEPC_street_10K.length) {
                 var $hoverText = $("<ul></ul>");
                 $.each(_hovered.iowa_usng_1k, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
@@ -669,9 +648,6 @@ window.usng_map = (function() {
                     $hoverText.append("<li>" + text + "</li>");
                 });
                 $.each(_hovered.mn_10k, function(i, text) {
-                    $hoverText.append("<li>" + text + "</li>");
-                });
-                $.each(_hovered.mn_10k_overview, function(i, text) {
                     $hoverText.append("<li>" + text + "</li>");
                 });
                 $.each(_hovered.MGACEPC_street_10K, function(i, text) {
@@ -713,9 +689,6 @@ window.usng_map = (function() {
             var MGACEPC_street_10K = leafletPip.pointInLayer(mouseEvent.latlng, _layers.MGACEPC_street_10K);
             var labels_MGACEPC_street_10K = _config.layers["MGACEPC_street_10K"].labelPropertyName;
 
-            var mn_10k_overview = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k_overview);
-            var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
-
             var iowa_usng_1k = leafletPip.pointInLayer(mouseEvent.latlng, _layers.iowa_usng_1k);
             var labels_1k = _config.layers["iowa_usng_1k"].labelPropertyName;
 
@@ -733,9 +706,6 @@ window.usng_map = (function() {
             });
             $.each(mn_10k, function(i, layer) {
                 _hovered.mn_10k.push(layer.feature.properties[labels_mn_10k]);
-            });
-            $.each(mn_10k_overview, function(i, layer) {
-                _hovered.mn_10k_overview.push(layer.feature.properties[labels_mn_10k_overview]);
             });
             $.each(MGACEPC_street_10K, function(i, layer) {
                 _hovered.MGACEPC_street_10K.push(layer.feature.properties[labels_MGACEPC_street_10K]);
@@ -762,7 +732,6 @@ window.usng_map = (function() {
             polygons: [],
             points: [],
             mn_10k: [],
-            mn_10k_overview: [],
             MGACEPC_street_10K: []
         };
 
@@ -795,10 +764,6 @@ window.usng_map = (function() {
             var labels_mn_10k = _config.layers["mn_10k"].labelPropertyName;
             var labels_mn_10k_url = _config.layers["mn_10k"].mapbookLocations;
 
-            var mn_10k_overview = leafletPip.pointInLayer(mouseEvent.latlng, _layers.mn_10k_overview);
-            var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
-            var labels_mn_10k_overview_url = _config.layers["mn_10k_overview"].mapbookLocations;
-
             var MGACEPC_street_10K = leafletPip.pointInLayer(mouseEvent.latlng, _layers.MGACEPC_street_10K);
             var labels_MGACEPC_street_10K = _config.layers["MGACEPC_street_10K"].labelPropertyName;
             var labels_MGACEPC_street_10K_url = _config.layers["MGACEPC_street_10K"].mapbookLocations;
@@ -818,13 +783,10 @@ window.usng_map = (function() {
             $.each(mn_10k, function(i, layer) {
                 _clicked.mn_10k.push(layer.feature.properties[labels_mn_10k], layer.feature.properties[labels_mn_10k_url]);
             });
-            $.each(mn_10k_overview, function(i, layer) {
-                _clicked.mn_10k_overview.push(layer.feature.properties[labels_mn_10k_overview], layer.feature.properties[labels_mn_10k_overview_url]);
-            });
             $.each(MGACEPC_street_10K, function(i, layer) {
                 _clicked.MGACEPC_street_10K.push(layer.feature.properties[labels_MGACEPC_street_10K], layer.feature.properties[labels_MGACEPC_street_10K_url]);
             });
-            results.show(_clicked.iowa_usng_1k, _clicked.iowa_usng_10k, _clicked.polygons, _clicked.points, _clicked.mn_10k, _clicked.mn_10k_overview, _clicked.MGACEPC_street_10K);
+            results.show(_clicked.iowa_usng_1k, _clicked.iowa_usng_10k, _clicked.polygons, _clicked.points, _clicked.mn_10k, _clicked.MGACEPC_street_10K);
         };
 
         function init() {
@@ -849,7 +811,6 @@ window.usng_map = (function() {
             polygons: [],
             points: [],
             mn_10k: [],
-            mn_10k_overview: [],
             MGACEPC_street_10K: []
         };
         var _handler;
@@ -876,7 +837,6 @@ window.usng_map = (function() {
                 var polygons = _layers.polygons.toGeoJSON();
                 var points = _layers.points.toGeoJSON();
                 var mn_10k = _layers.mn_10k.toGeoJSON();
-                var mn_10k_overview = _layers.mn_10k_overview.toGeoJSON();
                 var MGACEPC_street_10K = _layers.MGACEPC_street_10K.toGeoJSON();
 
                 var labels_10k = _config.layers["iowa_usng_10k"].labelPropertyName;
@@ -887,9 +847,6 @@ window.usng_map = (function() {
 
                 var labels_mn_10k = _config.layers["mn_10k"].labelPropertyName;
                 var labels_mn_10k_url = _config.layers["mn_10k"].mapbookLocations;
-
-                var labels_mn_10k_overview = _config.layers["mn_10k_overview"].labelPropertyName;
-                var labels_mn_10k_overview_url = _config.layers["mn_10k_overview"].mapbookLocations;
 
                 var labels_MGACEPC_street_10K = _config.layers["MGACEPC_street_10K"].labelPropertyName;
                 var labels_MGACEPC_street_10K_url = _config.layers["MGACEPC_street_10K"].mapbookLocations;
@@ -908,7 +865,6 @@ window.usng_map = (function() {
                 _selected.iowa_usng_1k = [];
                 _selected.iowa_usng_10k = [];
                 _selected.mn_10k = [];
-                _selected.mn_10k_overview = [];
                 _selected.MGACEPC_street_10K = [];
                 _selected.polygons = [];
                 _selected.points = [];
@@ -943,20 +899,14 @@ window.usng_map = (function() {
                         _selected.mn_10k.push(feature.properties[labels_mn_10k], feature.properties[labels_mn_10k_url]);
                     }
                 });
-                $.each(mn_10k_overview.features, function(i, feature) {
-                    var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
-                    if (intersection) {
-                        _selected.mn_10k_overview.push(feature.properties[labels_mn_10k_overview], feature.properties[labels_mn_10k_overview_url]);
-                    }
-                });
                 $.each(MGACEPC_street_10K.features, function(i, feature) {
                     var intersection = (typeof turf.intersect(feature, drawnFeature) !== "undefined") ? true : false;
                     if (intersection) {
                         _selected.MGACEPC_street_10K.push(feature.properties[labels_MGACEPC_street_10K], feature.properties[labels_MGACEPC_street_10K_url]);
                     }
                 });
-                if (_selected.iowa_usng_1k.length > 0 || _selected.iowa_usng_10k.length > 0 || _selected.polygons.length > 0 || _selected.points.length > 0 || _selected.mn_10k.length > 0 || _selected.mn_10k_overview.length > 0 || _selected.MGACEPC_street_10K.length > 0) {
-                    results.show(_selected.iowa_usng_1k, _selected.iowa_usng_10k, _selected.polygons, _selected.points, _selected.mn_10k, _selected.mn_10k_overview, _selected.MGACEPC_street_10K);
+                if (_selected.iowa_usng_1k.length > 0 || _selected.iowa_usng_10k.length > 0 || _selected.polygons.length > 0 || _selected.points.length > 0 || _selected.mn_10k.length > 0 || _selected.MGACEPC_street_10K.length > 0) {
+                    results.show(_selected.iowa_usng_1k, _selected.iowa_usng_10k, _selected.polygons, _selected.points, _selected.mn_10k, _selected.MGACEPC_street_10K);
                 }
                 else {
                     results.hide();
