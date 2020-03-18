@@ -563,7 +563,7 @@ window.usng_map = (function() {
                 var $text = $("<ul></ul>");
                 $.each(iowa_usng_1k_groups, function(i, text) {
                   $("<h4>Iowa 1k: " + text[0] + "</h4>").appendTo($text);
-                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map</a></li>").appendTo($text);
+                  $("<li><a href='" + text[1] + "' target='_blank'>Download Map Book</a></li>").appendTo($text);
                 });
 
                 $.each(point_groups, function(i, text) {
