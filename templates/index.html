@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <title></title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="./static/usng-web-map.css">
+      <script src="./static/jquery-3.4.1.min.js"></script>
+      <script src="./static/usng-web-map.js"></script>
+      <script>
+         $(document)
+             .ready(function() {
+                 usng_map.create({
+                     mapID: "map",
+                     debug: true
+                 });
+                 fetchData()
+             });
+             async function fetchData() {
+     const request = new Request("/getData", {
+       headers: {
+         "Content-Type": "text/json"
+       },
+       method: "GET"
+     });
+     return await fetch(request)
+      .then(function (response) {
+          return response.json();
+      }).then(function (text) {
+          console.log(text)
+      }).catch(function () {
+        console.log('error')
+      });}
+      </script>
+
+   </head>
+   <body>
+      <!--[if lt IE 8]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+      <!-- Add your site or application content here -->
+      <div id="map" class="usng_web_map hide_results large_screen horizontal_aspect">
+         <div id="inner_map_container" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab" tabindex="0" style="position: relative; outline: none;">
+            <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, -248px, 0px);">
+               <div class="leaflet-pane leaflet-tile-pane">
+                  <div class="leaflet-layer" style="z-index: 1; opacity: 1;">
+                     <div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 19; transform: translate3d(0px, 0px, 0px) scale(1);"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/47/30" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(276px, 318px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/46/30" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(276px, 62px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/47/29" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(20px, 318px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/47/31" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(532px, 318px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/48/30" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(276px, 574px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/46/29" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(20px, 62px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/46/31" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(532px, 62px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/48/29" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(20px, 574px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/48/31" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(532px, 574px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/47/28" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-236px, 318px, 0px); opacity: 1;"><img alt="" src="https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/47/32" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(788px, 318px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/46/28" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-236px, 62px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/46/32" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(788px, 62px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/48/28" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-236px, 574px, 0px); opacity: 1;"><img alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/7/48/32" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(788px, 574px, 0px); opacity: 1;"></div>
+                  </div>
+               </div>
+               <div class="leaflet-pane leaflet-shadow-pane"></div>
+               <div class="leaflet-pane leaflet-overlay-pane">
+
+               </div>
+
+               <div class="leaflet-pane leaflet-popup-pane"></div>
+               <div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(7883.5px, 12169px, 0px) scale(64);"></div>
+            </div>
+            <div class="leaflet-control-container">
+               <div class="leaflet-top leaflet-left">
+                  <div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a></div>
+                  <div class="leaflet-bar leaflet-control leaflet-control-zoom-extent"><a class="button-zoom-extent"><i class="fa fa-globe"></i></a></div>
+                  <div class="leaflet-bar leaflet-control leaflet-control-dragselect"><a class="button-dragselect"><i class="fa fa-object-group"></i></a></div>
+               </div>
+               <div class="leaflet-top leaflet-right">
+                  <div class="leaflet-bar leaflet-control leaflet-control-hoverpopup" style="display: none;"></div>
+               </div>
+               <div class="leaflet-bottom leaflet-left">
+                 <div class="info legend leaflet-control"></div>
+               </div>
+               <div class="leaflet-bottom leaflet-right">
+                  <div class="esri-leaflet-logo leaflet-control" style="margin: 0px;"><a href="http://www.esri.com" target="_blank" style="border: none;"><img src="https://js.arcgis.com/3.13/esri/images/map/logo-sm.png" alt="Powered by Esri" style="border: none;"></a></div>
+                  <div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | <span class="esri-attributions" style="line-height:14px; vertical-align: -3px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; display:inline-block;">Esri</span></div>
+               </div>
+            </div>
+         </div>
+         <div id="results_container">
+            <div class="close_results"><i class="fa fa-times-circle"></i> Results</div>
+            <div class="results_list"></div>
+         </div>
+      </div>
+   </body>
+</html>
